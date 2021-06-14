@@ -1,4 +1,4 @@
-# Binancial Bot
+# Binancial Trader
 
 ## Author: Shaun Hamilton
 
