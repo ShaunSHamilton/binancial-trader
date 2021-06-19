@@ -21,11 +21,11 @@
 ## Using the Binance Class
 
 ```ts
-const Bin = new Binance();
+const bin = new Binance();
 // Ping servers
-Bin.testConnection();
+bin.testConnection();
 // Get server time [ms]
-Bin.getServerTime();
+bin.getServerTime();
 ```
 
 ## Using the Account Class
@@ -33,3 +33,19 @@ Bin.getServerTime();
 ## Using the ExchangeInfo Class
 
 ## Using the Order Class
+
+## Running the Tests
+
+Run all tests:
+
+```sh
+npm run test -- --all
+```
+
+Flags for specific tests:
+
+| Flag     | Test Run               |
+| -------- | ---------------------- |
+| `--acc`  | All Account tests      |
+| `--exch` | All ExchangeInfo tests |
+| `--ord`  | All Order tests        |

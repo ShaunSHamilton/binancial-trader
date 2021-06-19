@@ -4,8 +4,8 @@ import Account from "./components/Account.ts";
 
 const bin = new Binance();
 // const exch = new ExchangeInfo("DOGEGBP");
-const mark = new MarketData();
-const acc = new Account();
+const mark = new MarketData("DOGEGBP");
+const acc = new Account("DOGEGBP");
 
 async function main() {
   const inputArgs = Deno.args;
@@ -13,10 +13,10 @@ async function main() {
     console.log(await bin.testConnection());
   }
   if (inputArgs.includes("--getInfo")) {
-    jLog(await mark.getAvgPrice("DOGEGBP"));
+    jLog(await mark.getAvgPrice());
   }
   if (inputArgs.includes("--getMyTrades")) {
-    jLog(await acc.getMyTrades("DOGEGBP", ...[, , ,], 3));
+    jLog(await acc.getMyTrades(...[, , ,], 3));
   }
 }
 
