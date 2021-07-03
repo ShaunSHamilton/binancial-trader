@@ -7,6 +7,7 @@ import { AccountOrderSideEnum } from "./types/Account.ts";
 import { OrderTypes } from "./types/Symbol.ts";
 import { getExchangeInfo } from "./fixtures/exchange.ts";
 import { getAccount, getMyTrades } from "./fixtures/account.ts";
+import { getAllOpenOrders } from "./fixtures/order.ts";
 import Order from "./components/Order.ts";
 import ExchangeInfo from "./components/ExchangeInfo.ts";
 import Account from "./components/Account.ts";
@@ -19,12 +20,12 @@ const ord = new Order(symbol);
 const acc = new Account(symbol);
 const exch = new ExchangeInfo(symbol);
 
-if (inputArgs.includes("--all") || inputArgs.includes("--exch")) {
+if (hasBeenFlagged(["--all", "--exch"])) {
   Deno.test("ExchangeInfo :::> getCurrentPrice", async () => {
     assertReturnType(await exch.getCurrentPrice(), getExchangeInfo);
   });
 }
-if (inputArgs.includes("--all") || inputArgs.includes("--acc")) {
+if (hasBeenFlagged(["--all", "--acc"])) {
   Deno.test("Account :::> getAccount", async () => {
     assertReturnType(await acc.getAccount(), getAccount);
   });
@@ -33,7 +34,7 @@ if (inputArgs.includes("--all") || inputArgs.includes("--acc")) {
     assertReturnType(await acc.getMyTrades(), getMyTrades);
   });
 }
-if (inputArgs.includes("--all") || inputArgs.includes("--ord")) {
+if (hasBeenFlagged(["--all", "--ord"])) {
   Deno.test(
     "Order :::> postTestOrder of type LIMIT without timeInForce",
     async () => {
@@ -72,6 +73,9 @@ if (inputArgs.includes("--all") || inputArgs.includes("--ord")) {
       );
     }
   );
+  Deno.test("Order :::> getAllOpenOrders without recvWindow", async () => {
+    assertReturnType(await ord.getAllOpenOrders(), getAllOpenOrders);
+  });
 }
 
 function assertReturnType(actual: unknown, expected: unknown): void {
@@ -101,4 +105,8 @@ function assertReturnType(actual: unknown, expected: unknown): void {
       assertReturnType(actual[prop], expected?.[prop]);
     }
   }
+}
+
+function hasBeenFlagged(flags: string[]): boolean {
+  return flags.some((flag) => inputArgs.includes(flag));
 }
