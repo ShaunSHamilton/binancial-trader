@@ -180,6 +180,10 @@ function error(
 - Error Codes: https://github.com/binance/binance-spot-api-docs/blob/master/errors.md
 */
 
+function hasBeenFlagged(flags: string[]): boolean {
+  return flags.some((flag) => Deno.args.includes(flag));
+}
+
 export {
   handleGet,
   handlePost,
@@ -189,4 +193,5 @@ export {
   logger,
   time,
   error,
+  hasBeenFlagged,
 };

@@ -1,7 +1,7 @@
 import {
   assertObjectMatch,
   AssertionError,
-} from "https://deno.land/std@0.97.0/testing/asserts.ts";
+} from "https://deno.land/std@0.102.0/testing/asserts.ts";
 // import ExchangeInfoType from "./types/ExchangeInfo.ts";
 import { AccountOrderSideEnum } from "./types/Account.ts";
 import { OrderTypes } from "./types/Symbol.ts";
@@ -11,8 +11,7 @@ import { getAllOpenOrders } from "./fixtures/order.ts";
 import Order from "./components/Order.ts";
 import ExchangeInfo from "./components/ExchangeInfo.ts";
 import Account from "./components/Account.ts";
-
-const inputArgs = Deno.args;
+import { hasBeenFlagged } from "./tools/index.ts";
 
 // Init objects
 const symbol = "DOGEGBP";
@@ -105,8 +104,4 @@ function assertReturnType(actual: unknown, expected: unknown): void {
       assertReturnType(actual[prop], expected?.[prop]);
     }
   }
-}
-
-function hasBeenFlagged(flags: string[]): boolean {
-  return flags.some((flag) => inputArgs.includes(flag));
 }
