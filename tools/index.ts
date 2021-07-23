@@ -1,5 +1,4 @@
-import { config } from "https://deno.land/x/dotenv@v2.0.0/mod.ts";
-import { hmac } from "https://deno.land/x/hmac@v2.0.1/mod.ts";
+import { config, hmac } from "../deps.ts";
 import { ErrType } from "../types/index.ts";
 const BASE_URL = "https://api.binance.com/api/v3";
 const { SECRET_KEY, API_KEY } = config();

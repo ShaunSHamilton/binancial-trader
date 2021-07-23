@@ -1,7 +1,4 @@
-import {
-  assertObjectMatch,
-  AssertionError,
-} from "https://deno.land/std@0.102.0/testing/asserts.ts";
+import { assertObjectMatch, AssertionError } from "./deps.ts";
 // import ExchangeInfoType from "./types/ExchangeInfo.ts";
 import { AccountOrderSideEnum } from "./types/Account.ts";
 import { OrderTypes } from "./types/Symbol.ts";
