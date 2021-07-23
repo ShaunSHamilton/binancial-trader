@@ -5,7 +5,7 @@ class Args {
     this.args = args;
     this.argVars = {};
   }
-  alias(short: string, long: string) {
+  alias(_short: string, long: string) {
     this.argVars[long] = "";
     return this;
   }
