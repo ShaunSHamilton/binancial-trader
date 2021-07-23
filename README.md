@@ -34,12 +34,18 @@ bin.getServerTime();
 
 ## Using the Order Class
 
+## Using the CRON
+
+```ts
+
+```
+
 ## Running the Tests
 
 Run all tests:
 
 ```sh
-npm run test -- --all
+npm run test -- -- --all
 ```
 
 Flags for specific tests:
@@ -49,3 +55,4 @@ Flags for specific tests:
 | `--acc`  | All Account tests      |
 | `--exch` | All ExchangeInfo tests |
 | `--ord`  | All Order tests        |
+| `--cron` | All Cron tests         |
