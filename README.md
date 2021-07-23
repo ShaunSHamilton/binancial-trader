@@ -36,9 +36,27 @@ bin.getServerTime();
 
 ## Using the CRON
 
-```ts
+### Function Signature
 
+```ts
+cron: (interval: number, cb: () => void, stepSize = 30000, timeToGo = 60000) => void
 ```
+
+_Where:_
+
+- `interval` is the time in milliseconds between each execution
+- `cb` is the callback function to execute
+- `stepSize` is the time in milliseconds how frequently the cron will check if `interval` has passed
+- `timeToGo` is the time in milliseconds how long the cron will stay alive
+
+```ts
+function main() {
+  // Make the money
+}
+cron(TimesEnum.HOUR, main, TimesEnum.MINUTE, TimesEnum.WEEK * 52);
+```
+
+**NOTE:** It is recommended to have `stepSize` be no more than half `interval`
 
 ## Running the Tests
 
