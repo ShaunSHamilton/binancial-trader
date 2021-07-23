@@ -1,7 +1,4 @@
-import {
-  assert,
-  assertThrowsAsync,
-} from "https://deno.land/std@0.102.0/testing/asserts.ts";
+import { assert, assertThrowsAsync } from "../deps.ts";
 import { checkCron, cron } from "./cron.ts";
 import { hasBeenFlagged } from "./index.ts";
 
