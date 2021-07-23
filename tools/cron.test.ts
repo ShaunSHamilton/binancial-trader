@@ -1,4 +1,7 @@
-import { assert } from "https://deno.land/std@0.102.0/testing/asserts.ts";
+import {
+  assert,
+  assertThrowsAsync,
+} from "https://deno.land/std@0.102.0/testing/asserts.ts";
 import { checkCron, cron } from "./cron.ts";
 import { hasBeenFlagged } from "./index.ts";
 
@@ -19,6 +22,32 @@ if (hasBeenFlagged(["--cron"])) {
     async function wait() {
       return await new Promise((resolve) => {
         setTimeout(resolve, 1000);
+      });
+    }
+    await wait();
+    assert(c === 2, `expected ${c} to be ${2}`);
+  });
+
+  Deno.test("CRON :::> throws if interval is less than stepSize", async () => {
+    const mockCB = () => {};
+    async function wait() {
+      return await new Promise((res) => {
+        cron(100, mockCB, 120, 120);
+        res("Throw");
+      });
+    }
+    await assertThrowsAsync(wait);
+  });
+
+  Deno.test("CRON :::> cron should run CB on initialisation", async () => {
+    let c = 0;
+    const mockCB = () => {
+      c++;
+    };
+    cron(120, mockCB, 20, 50);
+    async function wait() {
+      return await new Promise((resolve) => {
+        setTimeout(resolve, 100);
       });
     }
     await wait();

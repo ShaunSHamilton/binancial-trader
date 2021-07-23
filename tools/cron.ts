@@ -18,6 +18,7 @@ export const cron = (
   }
   const startTime = Date.now();
   let timeAtLastRun = startTime;
+  cb();
   const intervalID = setInterval(() => {
     const isDoneCronning = checkCron(startTime, timeToGo);
     if (isDoneCronning) {
