@@ -25,3 +25,21 @@ main();
 function jLog(json: Record<symbol, unknown>) {
   console.table(json);
 }
+
+// WANTED USE CASES
+
+// GENERAL ALGORITHM
+
+// Takes a given amount of asset
+// While isAssetAvailable, isCanInvest
+
+// Buy at initial amount
+// If assetMarketPrice === assetPurchasePrice + x% -> sell
+// If assetSalePrice - y% === assetMarketPrice -> buy
+
+// initialiseAlgorithm(assetCount, assetPriceToBuy, percentIncreaseToSell, percentDecreaseToBuy);
+
+// BOLL ALGORITHM
+
+// If assetMarketPrice < BOLL_LOWER, investInAsset
+// If assetMarketPrice > BOLL_UPPER, withdrawFromAsset

@@ -45,3 +45,6 @@ jobs:
 
       - name: Run Cron Tests
         run: deno test --allow-all -- --cron
+
+      - name: Run Data Tests
+        run: deno test --allow-env --allow-read -- --data

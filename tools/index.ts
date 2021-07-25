@@ -1,4 +1,4 @@
-import { config, hmac } from "../deps.ts";
+import { config, hmac, AssertionError } from "../deps.ts";
 import { ErrType } from "../types/index.ts";
 const BASE_URL = "https://api.binance.com/api/v3";
 const { SECRET_KEY, API_KEY } = config();
@@ -183,6 +183,35 @@ function hasBeenFlagged(flags: string[]): boolean {
   return flags.some((flag) => Deno.args.includes(flag));
 }
 
+function assertReturnType(actual: unknown, expected: unknown): void {
+  if (typeof actual !== typeof expected) {
+    console.table(actual);
+    console.table(expected);
+    throw new AssertionError(`expected ${actual} to be of type ${expected}`);
+  }
+  // TODO: test for arrays?
+  if (typeof actual === "object" && typeof expected === "object") {
+    for (const prop in actual) {
+      // @ts-expect-error If prop does not exist on params, assertion should throw
+      if (typeof expected?.[prop] !== typeof actual[prop]) {
+        /* @ts-expect-error */
+        console.table(actual[prop]);
+        /* @ts-expect-error */
+        console.table(expected?.[prop]);
+        throw new AssertionError(
+          /* @ts-expect-error */
+          `expected ${prop}: ${typeof actual[
+            prop
+            /* @ts-expect-error */
+          ]} to be of type ${typeof expected?.[prop]}`
+        );
+      }
+      /* @ts-expect-error */
+      assertReturnType(actual[prop], expected?.[prop]);
+    }
+  }
+}
+
 export {
   handleGet,
   handlePost,
@@ -193,4 +222,5 @@ export {
   time,
   error,
   hasBeenFlagged,
+  assertReturnType,
 };
