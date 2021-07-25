@@ -5,7 +5,9 @@
   "main": "index.ts",
   "scripts": {
     "start": "deno run --allow-net --allow-env ./index.ts",
-    "test": "deno test --allow-all --allow-env --no-check"
+    "test": "deno test --allow-net --allow-read --allow-env --no-check",
+    "get-data": "deno run --allow-read --allow-write --allow-net ./tools/data.ts",
+    "test-data": "npm run test -- -- --data"
   },
   "keywords": [
     "Shaun",
