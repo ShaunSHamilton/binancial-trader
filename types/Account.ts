@@ -9,6 +9,7 @@ export interface AccountOrderRESULTType extends AccountOrderVerbType {
 
 export interface AccountOrderFULLType extends AccountOrderRESULTType {
   fills: FillType[];
+  orderId: number;
 }
 type FillType = {
   price: string; // "4000.00000000",
@@ -41,6 +42,7 @@ export enum AccountOrderTimeInForceEnum {
   FOK = "FOK",
 }
 
+// TODO: assert type not optional depends on OrderType
 export interface AccountOrderVerbType extends OrderType {
   orderListId?: number; // -1; //Unless part of an OCO, the value will always be -1.
   origClientOrderId?: string;
