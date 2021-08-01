@@ -68,7 +68,7 @@ type OrderStateType = {
   tradeAssetCount: number;
 };
 const allOrderState: OrderStateType[] = [];
-async function main() {
+export async function main() {
   const allData = await getData();
   const orderState: OrderStateType = {
     side: "BUY",
@@ -126,4 +126,4 @@ async function main() {
   // await writeOrders(allOrderState);
 }
 
-main();
+// main();
