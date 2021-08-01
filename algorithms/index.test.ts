@@ -31,7 +31,8 @@ async function getData() {
   }
 }
 
-async function writeOrders(orderState: OrderStateType[]) {
+// TODO: writeOrders does not print what is expected
+async function _writeOrders(orderState: OrderStateType[]) {
   try {
     await Deno.writeTextFile(
       "./data/eth-gbp-orders.json",
@@ -101,6 +102,7 @@ async function main() {
         orderState.baseAssetCount = 0;
       }
       console.log(orderState);
+      // TODO: Deno .push appears asynchronous/batched??
       allOrderState.push(orderState);
     }
 

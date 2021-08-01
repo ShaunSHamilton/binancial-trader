@@ -99,7 +99,7 @@ function executeOrder(
 // ---------------------------------
 
 // TODO: Test state setter
-function algoState<T>(
+function _algoState<T>(
   initialValue: T | null
 ): [T | null, (x: T | null) => T | null] {
   class Alg {
