@@ -17,7 +17,10 @@ export async function getKlineData(
 async function createJsonFile(klineData: MarketKline) {
   const klineArr = arrArrToArrRecord(klineData);
   try {
-    await Deno.writeTextFile("./data/eth-gbp.json", JSON.stringify(klineArr));
+    await Deno.writeTextFile(
+      "./data/eth-gbp-002.json",
+      JSON.stringify(klineArr)
+    );
     console.log("Written");
   } catch (e) {
     console.error(e.message);
@@ -36,3 +39,5 @@ export function arrArrToArrRecord(klineData: MarketKline) {
   }
   return klineArr;
 }
+
+// getKlineData("ETHGBP", MarketKlineEnum.THIRTY_MINUTES);
