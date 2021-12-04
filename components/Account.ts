@@ -22,6 +22,7 @@ class Account extends Binance {
   }
 
   async getMyTrades(
+    orderId?: number,
     startTime?: number,
     endTime?: number,
     fromId?: number,
@@ -40,6 +41,7 @@ class Account extends Binance {
       {
         symbol: this.symbol,
         timestamp: true,
+        orderId,
         startTime,
         endTime,
         fromId,

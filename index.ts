@@ -16,7 +16,7 @@ async function main() {
     jLog(await mark.getAvgPrice());
   }
   if (inputArgs.includes("--getMyTrades")) {
-    jLog(await acc.getMyTrades(...[, , ,], 3));
+    jLog(await acc.getMyTrades(...[, , , ,], 3));
   }
 }
 
