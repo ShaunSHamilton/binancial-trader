@@ -1,4 +1,6 @@
+import { ExchangeFiltersEnum } from "../types/ExchangeFilter.ts";
 import ExchangeInfoType from "../types/ExchangeInfo.ts";
+import { SymbolFiltersEnum } from "../types/Symbol.ts";
 
 export const getExchangeInfo: ExchangeInfoType = {
   timezone: "UTC",
@@ -25,11 +27,11 @@ export const getExchangeInfo: ExchangeInfoType = {
   ],
   exchangeFilters: [
     {
-      filterType: "EXCHANGE_MAX_NUM_ORDERS",
+      filterType: ExchangeFiltersEnum.EXCHANGE_MAX_NUM_ORDERS,
       maxNumOrders: 1000,
     },
     {
-      filterType: "EXCHANGE_MAX_ALGO_ORDERS",
+      filterType: ExchangeFiltersEnum.EXCHANGE_MAX_NUM_ALGO_ORDERS,
       maxNumAlgoOrders: 200,
     },
   ],
@@ -60,53 +62,53 @@ export const getExchangeInfo: ExchangeInfoType = {
       isMarginTradingAllowed: true,
       filters: [
         {
-          filterType: "PRICE_FILTER",
+          filterType: SymbolFiltersEnum.PRICE_FILTER,
           minPrice: "0.00000100",
           maxPrice: "100000.00000000",
           tickSize: "0.00000100",
         },
         {
-          filterType: "PERCENT_PRICE",
+          filterType: SymbolFiltersEnum.PERCENT_PRICE,
           multiplierUp: "1.3000",
           multiplierDown: "0.7000",
           avgPriceMins: 5,
         },
         {
-          filterType: "LOT_SIZE",
+          filterType: SymbolFiltersEnum.LOT_SIZE,
           minQty: "0.00100000",
           maxQty: "100000.00000000",
           stepSize: "0.00100000",
         },
         {
-          filterType: "MIN_NOTIONAL",
+          filterType: SymbolFiltersEnum.MIN_NOTIONAL,
           minNotional: "0.00100000",
           applyToMarket: true,
           avgPriceMins: 5,
         },
         {
-          filterType: "ICEBERG_PARTS",
+          filterType: SymbolFiltersEnum.ICEBERG_PARTS,
           limit: 10,
         },
         {
-          filterType: "MARKET_LOT_SIZE",
+          filterType: SymbolFiltersEnum.MARKET_LOT_SIZE,
           minQty: "0.00100000",
           maxQty: "100000.00000000",
           stepSize: "0.00100000",
         },
         {
-          filterType: "MAX_NUM_ORDERS",
+          filterType: SymbolFiltersEnum.MAX_NUM_ORDERS,
           maxNumOrders: 25,
         },
         {
-          filterType: "MAX_NUM_ALGO_ORDERS",
+          filterType: SymbolFiltersEnum.MAX_NUM_ALGO_ORDERS,
           maxNumAlgoOrders: 5,
         },
         {
-          filterType: "MAX_NUM_ICEBERG_ORDERS",
+          filterType: SymbolFiltersEnum.MAX_NUM_ICEBERG_ORDERS,
           maxNumIcebergOrders: 5,
         },
         {
-          filterType: "MAX_POSITION",
+          filterType: SymbolFiltersEnum.MAX_POSITION,
           maxPosition: "10.00000000",
         },
       ],

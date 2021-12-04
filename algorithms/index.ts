@@ -98,6 +98,47 @@ function executeOrder(
 }
 // ---------------------------------
 
+export type KlineDataType = {
+  OpenTime: number;
+  Open: string;
+  High: string;
+  Low: string;
+  Close: string;
+  Volume: string;
+  CloseTime: number;
+  QuoteAssetVolume: string;
+  NumTrades: number;
+  TakerBuyBaseAssetVolume: string;
+  TakerBuyQuoteAssetVolume: string;
+  Ignore: string;
+};
+
+export function bollenger(
+  candleKlines: KlineDataType[],
+  timeToUse: keyof KlineDataType = "Close",
+  movingAveragePeriod = 20
+) {
+  const arr = candleKlines
+    .slice(-movingAveragePeriod)
+    ?.map((kline) => s2n(kline[timeToUse]));
+  const mid = arr.reduce((acc, curr) => acc + curr, 0) / movingAveragePeriod;
+  const sigma =
+    (arr.reduce((acc, curr) => (acc + curr) ^ 2, 0) / movingAveragePeriod) ^
+    (1 / 2);
+  const upper = mid + sigma * 2;
+  const lower = mid - sigma * 2;
+  return { mid, upper, lower };
+}
+
+export function s2n(str: string | number) {
+  return Number(str);
+}
+
+export function avg(...x: number[]) {
+  const t = x.length;
+  return x.reduce((a, c) => a + c, 0) / t;
+}
+
 // TODO: Test state setter
 function _algoState<T>(
   initialValue: T | null

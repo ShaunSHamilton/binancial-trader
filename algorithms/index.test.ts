@@ -1,21 +1,7 @@
 // Testing algorithm on test data in ./data
-
+import { KlineDataType, s2n, avg } from "./index.ts";
 import { TimesEnum } from "../tools/cron.ts";
 
-type KlineDataType = {
-  OpenTime: number;
-  Open: string;
-  High: string;
-  Low: string;
-  Close: string;
-  Volume: string;
-  CloseTime: number;
-  QuoteAssetVolume: string;
-  NumTrades: number;
-  TakerBuyBaseAssetVolume: string;
-  TakerBuyQuoteAssetVolume: string;
-  Ignore: string;
-};
 // Find time to start from data
 function timeToStart(data: KlineDataType[]) {
   return data[0].OpenTime;
@@ -23,7 +9,7 @@ function timeToStart(data: KlineDataType[]) {
 
 async function getData() {
   try {
-    const res = await Deno.readTextFile("./data/eth-gbp-002.json");
+    const res = await Deno.readTextFile("./data/gbp-usdt-001.json");
     return JSON.parse(res);
   } catch (e) {
     console.error(e);
@@ -44,20 +30,19 @@ async function _writeOrders(orderState: OrderStateType[]) {
   }
 }
 
-function s2n(str: string) {
-  return Number(str);
-}
-
-function avg(...x: number[]) {
-  const t = x.length;
-  return x.reduce((a, c) => a + c, 0) / t;
-}
-
-const MOCK_INTERVAL = TimesEnum.MINUTE;
+const MOCK_INTERVAL = TimesEnum.HOUR;
 // const MOCK_STEPSIZE = TimesEnum.MINUTE;
 const MOCK_TIMETOGO = TimesEnum.WEEK * 50;
-const percentDecreaseToBuy = 0.05;
-const percentIncreaseToSell = 0.05;
+const percentDecreaseToBuy = 0.01;
+const percentIncreaseToSell = 0.01;
+
+type VariableState = {
+  percentDecreaseToBuy: number;
+  percentIncreaseToSell: number;
+  mockTimeToGo: number;
+  mockInterval: number;
+  price: number;
+};
 
 type OrderStateType = {
   side: "BUY" | "SELL";
@@ -67,21 +52,28 @@ type OrderStateType = {
   baseAssetCount: number;
   tradeAssetCount: number;
 };
-const allOrderState: OrderStateType[] = [];
-export async function main() {
+export async function main({
+  percentDecreaseToBuy,
+  percentIncreaseToSell,
+  mockTimeToGo,
+  mockInterval,
+  price,
+}: VariableState) {
+  // const allOrderState: OrderStateType[] = [];
+  const allOrderState: OrderStateType[] = [];
   const allData = await getData();
   const orderState: OrderStateType = {
-    side: "BUY",
+    side: "SELL",
     status: "NEW",
-    price: 1350,
-    timeFilled: 1626035400000,
-    baseAssetCount: 0,
-    tradeAssetCount: 500,
+    price,
+    timeFilled: 1607968800000,
+    baseAssetCount: 100,
+    tradeAssetCount: 0,
   };
   const startOffset = timeToStart(allData);
   for (const data of allData) {
     const { Low, High, OpenTime, CloseTime } = data;
-    if (OpenTime > MOCK_TIMETOGO + startOffset) break;
+    if (OpenTime > mockTimeToGo + startOffset) break;
     const low = s2n(Low);
     const high = s2n(High);
     const avgTime = avg(OpenTime, CloseTime);
@@ -101,12 +93,16 @@ export async function main() {
           orderState.baseAssetCount * orderState.price;
         orderState.baseAssetCount = 0;
       }
-      console.log(orderState);
-      // TODO: Deno .push appears asynchronous/batched??
-      allOrderState.push(orderState);
+      // TODO: Find common way to push non-referenced value
+      allOrderState.push(
+        Object.entries(orderState).reduce(
+          (acc, curr) => ({ ...acc, [curr[0]]: curr[1] }),
+          [] as unknown as OrderStateType
+        )
+      );
     }
 
-    if (orderState.timeFilled + MOCK_INTERVAL > avgTime) {
+    if (orderState.timeFilled + mockInterval > avgTime) {
       continue;
     }
     if (orderState.status === "FILLED") {
@@ -123,7 +119,52 @@ export async function main() {
       }
     }
   }
+  return allOrderState;
   // await writeOrders(allOrderState);
 }
 
-// main();
+(async () => {
+  const bestProfitState = {
+    tradeAssetCount: 0,
+    price: 1.3286,
+    percentDecreaseToBuy: 0.04,
+    percentIncreaseToSell: 0.11,
+    mockInterval: 0,
+    mockTimeToGo: 0,
+  };
+  const inititalConditions = {
+    percentDecreaseToBuy: percentDecreaseToBuy,
+    percentIncreaseToSell: percentIncreaseToSell,
+    mockInterval: MOCK_INTERVAL,
+    mockTimeToGo: MOCK_TIMETOGO,
+    price: 1.385,
+  };
+  for (let i = inititalConditions.percentDecreaseToBuy; i <= 0.2; i += 0.005) {
+    for (
+      let j = inititalConditions.percentIncreaseToSell;
+      j <= 0.2;
+      j += 0.005
+    ) {
+      for (let price = inititalConditions.price; price <= 1.5; price += 0.05) {
+        // ------------------------------------------------------------------------------
+        const orderStates = await main({
+          ...inititalConditions,
+          percentDecreaseToBuy: i,
+          percentIncreaseToSell: j,
+          price,
+        });
+        // -------------------------------------------------------------------------------
+        const tradeAssetCount =
+          orderStates[orderStates.length - 1].tradeAssetCount;
+        if (tradeAssetCount > bestProfitState.tradeAssetCount) {
+          bestProfitState.tradeAssetCount = tradeAssetCount;
+          bestProfitState.price = price;
+          bestProfitState.percentDecreaseToBuy = i;
+          bestProfitState.percentIncreaseToSell = j;
+          console.log(bestProfitState);
+        }
+      }
+    }
+  }
+  console.log(bestProfitState);
+})();

@@ -18,7 +18,7 @@ async function createJsonFile(klineData: MarketKline) {
   const klineArr = arrArrToArrRecord(klineData);
   try {
     await Deno.writeTextFile(
-      "./data/eth-gbp-002.json",
+      "./data/gbp-usdt-002.json",
       JSON.stringify(klineArr)
     );
     console.log("Written");
@@ -40,4 +40,4 @@ export function arrArrToArrRecord(klineData: MarketKline) {
   return klineArr;
 }
 
-// getKlineData("ETHGBP", MarketKlineEnum.THIRTY_MINUTES);
+getKlineData("GBPUSDT", MarketKlineEnum.ONE_HOUR);
