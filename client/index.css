@@ -1,0 +1,53 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --colour-background: #000;
+  --colour-text: #e8e8e8;
+}
+
+body {
+  background-color: var(--colour-background);
+  color: var(--colour-text);
+  width: 100vw;
+  min-height: 100vh;
+}
+
+header {
+  width: 100%;
+  height: 55px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#logo {
+  width: 55px;
+}
+
+/* h1 {} */
+
+/* nav {} */
+
+/* nav > ul {} */
+
+nav > ul > li {
+  list-style: none;
+}
+
+nav > ul > li > a {
+  text-decoration: none;
+  color: var(--colour-text);
+}
+
+main {
+  width: 100%;
+  min-height: 800px;
+}
+
+#chart {
+  width: 100%;
+  min-height: 800px;
+}
